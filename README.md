@@ -1,0 +1,1 @@
+# Ethergit IDE Solidity Language Plugin
