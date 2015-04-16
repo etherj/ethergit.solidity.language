@@ -9,9 +9,10 @@ define('ace/mode/solidity_highlight_rules', ['require'], function(require) {
         var intTypes = 'bytes|int|uint';
         for (var width = 8; width <= 256; width += 8)
             intTypes += '|bytes' + (width / 8) + '|uint' + width + '|int' + width;
+        var predefined = "|sha3|sha256|ripemd160|ecrecover|suicide|log0|log1|log2|log3|log4|block|msg|tx";
         var keywordMapper = this.createKeywordMapper({
             "variable.language":
-                "this|bool|byte|bytes|bytes0|address|" + intTypes,
+                "this|bool|byte|bytes|bytes0|address|" + intTypes + predefined,
             "keyword":
                 "contract|constant|" +
                 "struct|mapping|enum|break|continue|delete|else|for|function|" +
