@@ -1,4 +1,4 @@
-define('ace/mode/solidity_highlight_rules', ['require'], function(require) {
+define(function(require, exports, module) {
     "use strict";
     
     var oop = require("ace/lib/oop");
@@ -336,5 +336,5 @@ define('ace/mode/solidity_highlight_rules', ['require'], function(require) {
     
     oop.inherits(SolidityHighlightRules, TextHighlightRules);
     
-    return { SolidityHighlightRules: SolidityHighlightRules };
+    exports.SolidityHighlightRules = SolidityHighlightRules;
 });

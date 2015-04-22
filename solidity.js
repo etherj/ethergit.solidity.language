@@ -2,9 +2,9 @@ define(function(require, exports, module) {
     main.consumes = ['Plugin', 'ace'];
     main.provides = ['ethergit.solidity.language'];
     
-    require('./solidity_mode.js');
-    require('./solidity_highlight_rules.js');
-    require('./solidity_snippets.js');
+    require('./solidity_mode');
+    require('./solidity_highlight_rules');
+    require('./solidity_snippets');
     
     return main;
 
@@ -16,7 +16,7 @@ define(function(require, exports, module) {
         
         ace.defineSyntax({
             id: 'solidity',
-            name: 'solidity',
+            name: 'plugins/ethergit.solidity.language/solidity_mode',
             caption: 'Solidity',
             extensions: 'sol'
         });

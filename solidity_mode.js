@@ -1,10 +1,8 @@
-define('ace/mode/solidity', ['require', 'ace/mode/solidity_highlight_rules'], function(require) {
+define(function(require, exports, module) {
     var oop = require('ace/lib/oop');
     var TextMode = require('ace/mode/text').Mode;
-    var SolidityHighlightRules = require('ace/mode/solidity_highlight_rules').SolidityHighlightRules;
+    var SolidityHighlightRules = require('./solidity_highlight_rules').SolidityHighlightRules;
     var MatchingBraceOutdent = require("ace/mode/matching_brace_outdent").MatchingBraceOutdent;
-    var Range = require("ace/range").Range;
-    var WorkerClient = require("ace/worker/worker_client").WorkerClient;
     var CstyleBehaviour = require("ace/mode/behaviour/cstyle").CstyleBehaviour;
     var CStyleFoldMode = require("ace/mode/folding/cstyle").FoldMode;
     
@@ -20,6 +18,8 @@ define('ace/mode/solidity', ['require', 'ace/mode/solidity_highlight_rules'], fu
     (function() {
         this.lineCommentStart = '//';
         this.blockComment = { start: '/*', end: '*/' };
+        
+        this.$id = 'solidity';
         
         this.getNextLineIndent = function(state, line, tab) {
             var indent = this.$getIndent(line);
@@ -63,5 +63,5 @@ define('ace/mode/solidity', ['require', 'ace/mode/solidity_highlight_rules'], fu
         };
     }).call(Mode.prototype);
     
-    return { Mode: Mode };
+    exports.Mode = Mode;
 });

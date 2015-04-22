@@ -1,4 +1,3 @@
-define('ace/snippets/solidity', function(require) {
-    "use strict";
+define(function(require) {
     return { snippetText: '', scope: 'solidity' };
 });
