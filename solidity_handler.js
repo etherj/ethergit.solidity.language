@@ -12,7 +12,7 @@ handler.analyzeCurrent = function(path, doc, ast, options, callback) {
     
     doc.replace(/(?:^|\n)\s*function\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
         structure["_" + name] = [{
-            row: util.getOffsetRow(doc, offset),
+            row: util.getOffsetRow(doc, offset+40),
             kind: "method",
             guessFargs: true
         }];
