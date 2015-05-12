@@ -17,14 +17,34 @@ handler.analyzeCurrent = function(path, doc, ast, options, callback) {
             guessFargs: true
         }];
     });
-    doc.replace(/(?:^|\n)\s*contract\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+    doc.replace(/(?:^|\n)\s*contract\s+(?!_)([^{ \(:]+)/g, function(fullMatch, name, offset) {
         structure["_" + name] = [{
             row: util.getOffsetRow(doc, offset+20),
-            kind: "method2",
+            kind: "event",
             guessFargs: true
         }];
     });
-
+    doc.replace(/(?:^|\n)\s*bytes32\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+        structure["_" + name] = [{
+            row: util.getOffsetRow(doc, offset+20),
+            kind: "property",
+            guessFargs: true
+        }];
+    });
+    doc.replace(/(?:^|\n)\s*address\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+        structure["_" + name] = [{
+            row: util.getOffsetRow(doc, offset+20),
+            kind: "property",
+            guessFargs: true
+        }];
+    });
+    doc.replace(/(?:^|\n)\s*uint\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+        structure["_" + name] = [{
+            row: util.getOffsetRow(doc, offset+20),
+            kind: "property",
+            guessFargs: true
+        }];
+    });
     var errors = [{
         pos: { sl: 0, sc: 0 },
         message: "This is a solidity file.",
