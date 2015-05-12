@@ -12,14 +12,14 @@ handler.analyzeCurrent = function(path, doc, ast, options, callback) {
     
     doc.replace(/(?:^|\n)\s*function\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
         structure["_" + name] = [{
-            row: util.getOffsetRow(doc, offset+40),
+            row: util.getOffsetRow(doc, offset+35),
             kind: "method",
             guessFargs: true
         }];
     });
     doc.replace(/(?:^|\n)\s*contract\s+(?!_)([^{ \(:]+)/g, function(fullMatch, name, offset) {
         structure["_" + name] = [{
-            row: util.getOffsetRow(doc, offset+20),
+            row: util.getOffsetRow(doc, offset+15),
             kind: "event",
             guessFargs: true
         }];
