@@ -38,7 +38,7 @@ handler.analyzeCurrent = function(path, doc, ast, options, callback) {
             guessFargs: true
         }];
     });
-    doc.replace(/(?:^|\n)\s*uint\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+    doc.replace(/(?:^|\n)\s*uint|int|var\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
         structure["_" + name] = [{
             row: util.getOffsetRow(doc, offset+20),
             kind: "property",
