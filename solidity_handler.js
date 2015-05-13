@@ -45,6 +45,20 @@ handler.analyzeCurrent = function(path, doc, ast, options, callback) {
             guessFargs: true
         }];
     });
+    doc.replace(/(?:^|\n)\s*int\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+        structure["_" + name] = [{
+            row: util.getOffsetRow(doc, offset+20),
+            kind: "property",
+            guessFargs: true
+        }];
+    });
+    doc.replace(/(?:^|\n)\s*var\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
+        structure["_" + name] = [{
+            row: util.getOffsetRow(doc, offset+20),
+            kind: "property",
+            guessFargs: true
+        }];
+    });
     var errors = [{
         pos: { sl: 0, sc: 0 },
         message: "This is a solidity file.",
