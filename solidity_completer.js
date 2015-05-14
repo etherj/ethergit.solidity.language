@@ -18,6 +18,14 @@ var solExplain = {
     "sol_int": "This creates a new int.",
     "sol_function": "This creates a new function.",
 };
+
+var solName = {
+    "sol_contract": "Contract",
+    "sol_bytes32": "Bytes32",
+    "sol_address": "Address",
+    "sol_int": "Int",
+    "sol_function": "Function",
+};
  
 var completer = module.exports = Object.create(baseLanguageHandler);
 
@@ -32,7 +40,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
         var matches = completeUtil.findCompletions(identifier, allIdentifiers);
         callback(matches.map(function(m) {
             return {
-              name: m,
+              name: solName[m],
               replaceText: solSnippets[m],
               doc: "<pre>" + solSnippets[m].replace("\^\^", "&#9251;").replace(/</g, "&lt;") + "\n\n" + solExplain[m] + "</pre>",
               icon: "package",
