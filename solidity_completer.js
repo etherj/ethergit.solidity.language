@@ -35,7 +35,7 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
               name: m,
               replaceText: solSnippets[m],
               doc: "<pre>" + solSnippets[m].replace("\^\^", "&#9251;").replace(/</g, "&lt;") + "\n\n" + solExplain[m] + "</pre>",
-              icon: null,
+              icon: "package",
               meta: "Solidity snippet",
               priority: 2
             };
