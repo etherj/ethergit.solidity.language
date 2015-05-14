@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    main.consumes = ['Plugin', 'ace', 'jsonalyzer'];
+    main.consumes = ['Plugin', 'ace', 'jsonalyzer', 'language'];
     main.provides = ['ethergit.solidity.language'];
     
     require('./solidity_mode');
@@ -11,6 +11,7 @@ define(function(require, exports, module) {
     function main(options, imports, register) {
         var Plugin = imports.Plugin;
         var jsonalyzer = imports.jsonalyzer;
+	var language = imports.language;
         var ace = imports.ace;
         
         var plugin = new Plugin('Ethergit', main.consumes);
@@ -38,6 +39,8 @@ define(function(require, exports, module) {
         });
         
         jsonalyzer.registerServerHandler('plugins/ethergit.solidity.language/solidity_handler');
+        language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_completer');
+
 
         register(null, {
             'ethergit.solidity.language': plugin
