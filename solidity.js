@@ -40,7 +40,7 @@ define(function(require, exports, module) {
         
         jsonalyzer.registerServerHandler('plugins/ethergit.solidity.language/solidity_handler');
         language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_completer');
-
+        language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_infer');
 
         register(null, {
             'ethergit.solidity.language': plugin
