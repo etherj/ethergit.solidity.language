@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    main.consumes = ['Plugin', 'ace', 'jsonalyzer', 'language'];
+    main.consumes = ['Plugin', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler'];
     main.provides = ['ethergit.solidity.language'];
     
     require('./solidity_mode');
@@ -10,6 +10,7 @@ define(function(require, exports, module) {
 
     function main(options, imports, register) {
         var Plugin = imports.Plugin;
+        var compiler = imports['ethergit.solidity.compiler'];
         var jsonalyzer = imports.jsonalyzer;
 	var language = imports.language;
         var ace = imports.ace;
@@ -24,7 +25,19 @@ define(function(require, exports, module) {
         });
         
         function load() {
-            
+	  language.getWorker(function(err, _worker) {
+            if (err)
+              return console.error(err);
+
+            _worker.on("docParse", function(e) {
+              compiler.getAST(e.data.code,function(e, d){
+			_worker.emit("astParsed", { data: {
+                            err: e,
+                            ast: d
+                        }});
+		});
+            });
+	  });
         }
 
         plugin.on('load', function() {
