@@ -195,7 +195,9 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
   var results = []
   var currentLine = doc.getLine( pos.row );
 
-  // completion for mappings (todo make sure this won't trigger on array)
+  // completion for mappings 
+  // TODO make sure this won't trigger on array
+  // TODO make completions work more than 1 per line
   var posBracketL = (currentLine.indexOf("[")+1) == pos.column;
   if( posBracketL ) 
     { 
@@ -245,8 +247,8 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
   function findTokenAST( token , ast) 
    {
      //locate token in ast
-     console.log(token, 't');
-     return token.replace(/ /g, '');
+     console.log([token], token.match(/[a-z0-9]+$/i), 't');
+     return token.match(/[a-z0-9]+$/i)[0];
    }
 
   function findTypeAST( type, ast, typeAdd, token, splitToken)
