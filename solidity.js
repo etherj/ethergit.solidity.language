@@ -50,12 +50,12 @@ define(function(require, exports, module) {
                     }
                   });
 
-                errorDialog.show("Solidity plugin loaded!");
+                errorDialog.show("Solidity plugin loaded!", 900000);
 
 		});
             });
 	  });
-          errorDialog.show("Solidity plugin loading...");
+          errorDialog.show("Solidity plugin loading...", 900000);
         }
 
         plugin.on('load', function() {
