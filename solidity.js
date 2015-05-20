@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    main.consumes = ['Plugin', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler'];
+    main.consumes = ['Plugin', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler', 'dialog.error'];
     main.provides = ['ethergit.solidity.language'];
     
     require('./solidity_mode');
@@ -14,6 +14,7 @@ define(function(require, exports, module) {
         var jsonalyzer = imports.jsonalyzer;
 	var language = imports.language;
         var ace = imports.ace;
+        var errorDialog = imports['dialog.error'];
         
         var plugin = new Plugin('Ethergit', main.consumes);
         
@@ -29,15 +30,30 @@ define(function(require, exports, module) {
             if (err)
               return console.error(err);
 
-            _worker.on("docParse", function(e) {
+            _worker.on("docParse", function(e, d) {
+              var filePath = e.data.path;
               compiler.getAST(e.data.code,function(e, d){
-			_worker.emit("astParsed", { data: {
-                            err: e,
-                            ast: d
-                        }});
+                if( !e && d.ast ) 
+		  localStorage[ filePath ] = JSON.stringify(d.ast);
+		else 
+                  if( localStorage.hasOwnProperty( filePath ) ) 
+                    { 
+                      e = null; 
+                      d = { 'ast': JSON.parse( localStorage[ filePath ] ) }; 
+                    }
+
+		_worker.emit("astParsed", 
+                  { data: 
+                    {
+                     err: e,
+                     ast: d
+                    }
+                  });
+
 		});
             });
 	  });
+          errorDialog.show("Solidity plugin loaded!");
         }
 
         plugin.on('load', function() {
