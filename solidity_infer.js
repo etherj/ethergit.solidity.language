@@ -72,7 +72,7 @@ var solidity_doc = {
 };
 
 var solidity_icon = {
-    "address": "property2",
+    "address": "property",
     "VariableDeclaration": "property"
 };
 
@@ -89,7 +89,7 @@ var block_complete = [
      'name': 'coinbase',
      'info': 'current block miner\'s address', 
      'rett': 'address',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -97,7 +97,7 @@ var block_complete = [
      'name': 'difficulty',
      'info': 'current block difficulty', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -105,7 +105,7 @@ var block_complete = [
      'name': 'gaslimit',
      'info': 'current block gaslimit', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -113,7 +113,7 @@ var block_complete = [
      'name': 'number',
      'info': 'current block number', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -121,7 +121,7 @@ var block_complete = [
      'name': 'blockhash',
      'info': 'hash of the given block', 
      'rett': 'bytes32',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -129,7 +129,7 @@ var block_complete = [
      'name': 'timestamp',
      'info': 'current block timestamp', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -139,7 +139,7 @@ var msg_complete = [
      'name': 'data',
      'info': 'complete calldata', 
      'rett': 'bytes',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -147,7 +147,7 @@ var msg_complete = [
      'name': 'gas',
      'info': 'remaining gas', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -155,7 +155,7 @@ var msg_complete = [
      'name': 'sender',
      'info': 'sender of the message (current call)', 
      'rett': 'address',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -163,7 +163,7 @@ var msg_complete = [
      'name': 'value',
      'info': 'number of wei sent with the message', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -174,7 +174,7 @@ var tx_complete = [
      'name': 'gasprice',
      'info': 'gasprice of the transaction', 
      'rett': 'uint',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   },
@@ -182,7 +182,7 @@ var tx_complete = [
      'name': 'origin',
      'info': 'sender of the transaction', 
      'rett': 'address',
-     'icon': 'unknown',
+     'icon': 'property',
      'meta': 'global',
      'prio': 7
   }
@@ -198,7 +198,8 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
   // completion for mappings 
   // TODO make sure this won't trigger on array
   // TODO make completions work more than 1 per line
-  var posBracketL = (currentLine.indexOf("[")+1) == pos.column;
+  // TODO type inference before completion `operator`
+  var posBracketL = currentLine.indexOf("[") > 0 ? (currentLine.indexOf("[")+1) == pos.column : false;
   if( posBracketL ) 
     { 
       var tokenNode = findTokenAST( currentLine.split('[')[0] , ast);
@@ -206,7 +207,7 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
     }
 
 
-  var posDotL = (currentLine.indexOf(".")+1) == pos.column;
+  var posDotL = currentLine.indexOf(".") > 0 ? (currentLine.indexOf(".")+1) == pos.column : false;
   if( posDotL ) 
     { 
       var tokenNode = findTokenAST( currentLine.slice( 0, currentLine.indexOf(".") ) , null);
@@ -238,9 +239,10 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
 	 name: elem['name'], 
 	 replaceText: elem['name'], 
 	 doc: "<pre>Return type: \n" + elem['rett'] + " \n\nVariable Info: \n" + elem['info'] + "</pre>",
-	 icon: 'event', 
+	 icon: elem['icon'], 
 	 meta: elem['meta'],
-	 priority: elem['prio'] 
+	 priority: elem['prio'],
+	 isContextual: true
       };
   }
 
@@ -290,7 +292,8 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
 		         doc: "<pre> Type: " + (typeAdd ? solidity_doc[ varType ] : varType) + "</pre>",
 		         icon: solidity_icon[ type ], 
 			 meta:  varType, /*solidity_meta[ type ]*/
-    		         priority: solidity_priority[ type ] 
+    		         priority: solidity_priority[ type ],
+			 isContextual: true
                        });
 		   }
 		}

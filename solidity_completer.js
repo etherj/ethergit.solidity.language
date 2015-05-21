@@ -8,7 +8,7 @@ var solSnippets = {
     "sol_bytes32": "bytes32 myNewBytes = \"^^\";",
     "sol_address": "address myNewAddress = \"^^\";",
     "sol_int": "int myNewInt = \"^^\";",
-    "sol_function": "function myNewFunction(args) {^^};",
+    "sol_function": "function myNewFunction(uint args) {^^}",
 };
 
 var solExplain = {
@@ -45,7 +45,8 @@ completer.complete = function(doc, fullAst, pos, currentNode, callback) {
               doc: "<pre>" + solSnippets[m].replace("\^\^", "&#9251;").replace(/</g, "&lt;") + "\n\n" + solExplain[m] + "</pre>",
               icon: "package",
               meta: ".sol snippet",
-              priority: 2
+              priority: 2,
+	      isGeneric: true
             };
         }));
 };
