@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    main.consumes = ['Plugin', 'ui', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler', 'dialog.notification'];
+    main.consumes = ['Plugin', 'ui', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler'];
     main.provides = ['ethergit.solidity.language'];
     
     require('./solidity_mode');
@@ -15,7 +15,7 @@ define(function(require, exports, module) {
         var jsonalyzer = imports.jsonalyzer;
         var language = imports.language;
         var ace = imports.ace;
-        var notifyDialog = imports['dialog.notification'];
+        //var notifyDialog = imports['dialog.notification'];
         
         var plugin = new Plugin('Ethergit', main.consumes);
         
@@ -58,13 +58,15 @@ define(function(require, exports, module) {
                   });
 
 		if( !loaded )
-                  notifyDialog.show("<div class='bar'> Solidity plugin loaded! </div>", 900000);
+	  	  console.log("*** Solidity language plugin loaded! ***");
+                  //notifyDialog.show("<div class='bar'> Solidity plugin loaded! </div>", 900000);
 
           	loaded = true;
                 });
             });
           });
-          notifyDialog.show("<div class='bar'> Solidity plugin loading... </div>", 900000);
+          //notifyDialog.show("<div class='bar'> Solidity plugin loading... </div>", 900000);
+	  console.log("*** Solidity language plugin loading...");
         }
 
         plugin.on('load', function() {
