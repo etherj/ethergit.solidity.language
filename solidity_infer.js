@@ -199,15 +199,15 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
   // TODO make sure this won't trigger on array
   // TODO make completions work more than 1 per line
   // TODO type inference before completion `operator`
-  var posBracketL = currentLine.indexOf("[") > 0 ? (currentLine.indexOf("[")+1) == pos.column : false;
+  var posBracketL = currentLine.indexOf("[") > 0 ? (currentLine.indexOf("[")+1) <= pos.column : false;
   if( posBracketL ) 
     { 
-      var tokenNode = findTokenAST( currentLine.split('[')[0] , ast);
-      findTypeAST( "VariableDeclaration", ast, "address" , tokenNode , '[') 
+      var tokenNode = findTokenAST( currentLine.slice( 0, currentLine.indexOf("[") ) , ast);
+      findTypeAST( "VariableDeclaration", ast, null , tokenNode , '[') 
+      filterResults( currentLine.slice(currentLine.indexOf("[")+1).replace(']','') ); 
     }
 
-
-  var posDotL = currentLine.indexOf(".") > 0 ? (currentLine.indexOf(".")+1) == pos.column : false;
+  var posDotL = currentLine.indexOf(".") > 0 ? (currentLine.indexOf(".")+1) <= pos.column : false;
   if( posDotL ) 
     { 
       var tokenNode = findTokenAST( currentLine.slice( 0, currentLine.indexOf(".") ) , null);
@@ -232,7 +232,13 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
 	}
       //else
       //findTypeAST( "VariableDeclaration", ast, null , tokenNode , '[') 
+
+      filterResults( currentLine.slice(currentLine.indexOf(".")+1) ); 
     }
+
+  function filterResults( str ) {
+    results = results.filter(function(e) { return e['name'].substr(0,str.length) == str; }); 
+  }
 
   function getFormatted( elem ) {
       return { 
@@ -250,7 +256,7 @@ completer.complete = function(doc, ast , pos, currentNode, callback) {
    {
      //locate token in ast
      console.log([token], token.match(/[a-z0-9]+$/i), 't');
-     return token.match(/[a-z0-9]+$/i)[0];
+     return token.match(/[a-z0-9_]+$/i)[0];
    }
 
   function findTypeAST( type, ast, typeAdd, token, splitToken)
