@@ -9,7 +9,9 @@ handler.extensions = ["sol"];
 
 handler.analyzeCurrent = function(path, doc, ast, options, callback) {
     var structure = {};
-    
+
+    if (doc.replace) {
+
     doc.replace(/(?:^|\n)\s*function\s+(?!_)([^ \(:]+)/g, function(fullMatch, name, offset) {
         structure["_" + name] = [{
             row: util.getOffsetRow(doc, offset+35),
@@ -59,6 +61,9 @@ handler.analyzeCurrent = function(path, doc, ast, options, callback) {
             guessFargs: true
         }];
     });
+
+    }
+
     var errors = [{
         pos: { sl: 0, sc: 0 },
         message: "This is a solidity file.",
