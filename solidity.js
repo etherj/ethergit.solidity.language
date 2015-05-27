@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    main.consumes = ['Plugin', 'ui', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler'];
+    main.consumes = ['Plugin', 'c9', 'ui', 'ace', 'jsonalyzer', 'language', 'ethergit.solidity.compiler'];
     main.provides = ['ethergit.solidity.language'];
     
     require('./solidity_mode');
@@ -10,12 +10,13 @@ define(function(require, exports, module) {
 
     function main(options, imports, register) {
         var Plugin = imports.Plugin;
+	var c9 = imports.c9;
         var ui = imports.ui;
         var compiler = imports['ethergit.solidity.compiler'];
         var jsonalyzer = imports.jsonalyzer;
         var language = imports.language;
         var ace = imports.ace;
-        //var notifyDialog = imports['dialog.notification'];
+	 //var notifyDialog = imports['dialog.notification'];
         
         var plugin = new Plugin('Ethergit', main.consumes);
         
@@ -80,9 +81,11 @@ define(function(require, exports, module) {
             
         });
         
-        jsonalyzer.registerServerHandler('plugins/ethergit.solidity.language/solidity_handler');
-        language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_completer');
-        language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_infer');
+	if( !c9.readonly ) { 
+          jsonalyzer.registerServerHandler('plugins/ethergit.solidity.language/solidity_handler');
+          language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_completer');
+          language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_infer');
+	}
 
         register(null, {
             'ethergit.solidity.language': plugin
