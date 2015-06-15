@@ -82,7 +82,7 @@ define(function(require, exports, module) {
         });
         
 	if( !c9.readonly ) { 
-          jsonalyzer.registerServerHandler('plugins/ethergit.solidity.language/solidity_handler');
+          jsonalyzer.registerWorkerHandler('plugins/ethergit.solidity.language/solidity_handler');
           language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_completer');
           language.registerLanguageHandler('plugins/ethergit.solidity.language/solidity_infer');
 	}
