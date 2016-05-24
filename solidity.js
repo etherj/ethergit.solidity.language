@@ -9,6 +9,8 @@ define(function(require, exports, module) {
   return main;
   
   function main(options, imports, register) {
+    this.version = JSON.parse(require('text!./package.json')).version;
+    
     var Plugin = imports.Plugin;
     var c9 = imports.c9;
     var ui = imports.ui;
